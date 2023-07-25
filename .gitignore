@@ -3,6 +3,9 @@
 /node_modules
 .idea
 
+#env
+.env
+
 # Logs
 logs
 *.log
