@@ -4,6 +4,7 @@ import { SparePart } from './entities/spare-part.entity';
 import { Repository } from 'typeorm';
 import { CreateSparePartDto } from './dto/create-spare-part.dto';
 import { CategoriesService } from '../categories/categories.service';
+import { UpdateSparePartDto } from './dto/update-spare-part.dto';
 
 @Injectable()
 export class SparePartsService {
@@ -19,7 +20,7 @@ export class SparePartsService {
 		if (!getCategory) {
 			throw Error('Category not found.');
 		}
-		const sparePart = await this.sparePartRepository.save({
+		return await this.sparePartRepository.save({
 			name,
 			count,
 			price,
@@ -27,7 +28,14 @@ export class SparePartsService {
 			functionality,
 			category: getCategory,
 		});
+	}
 
-		return sparePart;
+	async updatePart(id: number, dto: UpdateSparePartDto) {
+		return await this.sparePartRepository
+			.createQueryBuilder()
+			.update(SparePart)
+			.set(dto)
+			.where('id = :id', { id: 1 })
+			.execute();
 	}
 }
