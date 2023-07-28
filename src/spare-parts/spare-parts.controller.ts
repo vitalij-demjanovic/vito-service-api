@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateSparePartDto } from './dto/create-spare-part.dto';
 import { SparePartsService } from './spare-parts.service';
 import { UpdateSparePartDto } from './dto/update-spare-part.dto';
