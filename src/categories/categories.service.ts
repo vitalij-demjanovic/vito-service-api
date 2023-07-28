@@ -11,6 +11,10 @@ export class CategoriesService {
 		private readonly categoriesRepository: Repository<Category>,
 	) {}
 
+	async getAllCategories() {
+		return this.categoriesRepository.find();
+	}
+
 	async createCategory(dto: CreateCategoryDto) {
 		return this.categoriesRepository.save(dto);
 	}
