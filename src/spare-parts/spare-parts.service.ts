@@ -15,11 +15,12 @@ export class SparePartsService {
 	) {}
 
 	async createPart(dto: CreateSparePartDto) {
-		const { name, count, price, description, functionality } = dto;
-		const getCategory = await this.categoriesService.getCategoryByValue('Pistols');
+		const { name, count, price, description, functionality, category } = dto;
+		const getCategory = await this.categoriesService.getCategoryByValue(category);
 		if (!getCategory) {
 			throw Error('Category not found.');
 		}
+
 		return await this.sparePartRepository.save({
 			name,
 			count,
@@ -37,5 +38,9 @@ export class SparePartsService {
 			.set(dto)
 			.where('id = :id', { id: 1 })
 			.execute();
+	}
+
+	async findByCategory(categoryId: number): Promise<SparePart[]> {
+		return this.sparePartRepository.find({ where: { category: { id: categoryId } } });
 	}
 }
