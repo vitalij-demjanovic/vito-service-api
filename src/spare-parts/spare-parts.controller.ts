@@ -26,4 +26,9 @@ export class SparePartsController {
 	async findById(@Param('partId') partId: number) {
 		return this.sparePartsService.findById(partId);
 	}
+
+	@Get('expenses/:id')
+	async findExpensesPart(@Param('id') partId: number) {
+		return this.sparePartsService.getExpensesPart(partId);
+	}
 }

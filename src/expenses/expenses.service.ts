@@ -15,13 +15,14 @@ export class ExpensesService {
 	) {}
 
 	async createExpense(dto: CreateExpenseDto) {
-		const { name, price, count } = await this.sparePartService.findById(dto.partId);
-		if (count >= dto.quantityTaken) {
+		const part = await this.sparePartService.findById(dto.partId);
+		if (part.count >= dto.quantityTaken) {
 			await this.expensesRepository.save({
-				partName: name,
+				partName: part.name,
 				date: new Date(),
 				quantityTaken: dto.quantityTaken,
-				totalPrice: price * dto.quantityTaken,
+				totalPrice: part.price * dto.quantityTaken,
+				part,
 			});
 			return await this.sparePartService.updateCount(dto.partId, dto.quantityTaken);
 		} else {

@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { SparePart } from '../../spare-parts/entities/spare-part.entity';
 
 @Entity()
@@ -18,6 +18,6 @@ export class Expense {
 	@Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
 	totalPrice: number;
 
-	@OneToMany(() => SparePart, (sparePart) => sparePart)
-	expense: SparePart;
+	@ManyToOne(() => SparePart, (sparePart) => sparePart.expenses)
+	part: SparePart;
 }

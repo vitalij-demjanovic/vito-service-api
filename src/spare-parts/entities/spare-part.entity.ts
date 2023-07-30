@@ -25,6 +25,6 @@ export class SparePart {
 	@ManyToOne(() => Category, (category) => category.spareParts)
 	category: Category;
 
-	@OneToMany(() => Expense, (expense) => expense)
-	withdrawals: Expense[];
+	@OneToMany(() => Expense, (expenses) => expenses.part)
+	expenses: Expense[];
 }

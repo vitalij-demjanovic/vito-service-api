@@ -56,4 +56,15 @@ export class SparePartsService {
 	async findByCategory(categoryId: number): Promise<SparePart[]> {
 		return this.sparePartRepository.find({ where: { category: { id: categoryId } } });
 	}
+
+	async getExpensesPart(id: number) {
+		return this.sparePartRepository.findOne({
+			where: {
+				id,
+			},
+			relations: {
+				expenses: true,
+			},
+		});
+	}
 }
