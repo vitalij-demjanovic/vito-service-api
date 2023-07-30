@@ -31,20 +31,29 @@ export class SparePartsService {
 		});
 	}
 
+	async findById(id: number) {
+		return this.sparePartRepository.findOne({ where: { id } });
+	}
+
+	async updateCount(id: number, subtraction: number) {
+		const part = await this.findById(id);
+
+		return await this.sparePartRepository.save({
+			...part,
+			count: part.count - subtraction,
+		});
+	}
+
 	async updatePart(id: number, dto: UpdateSparePartDto) {
 		return await this.sparePartRepository
 			.createQueryBuilder()
 			.update(SparePart)
 			.set(dto)
-			.where('id = :id', { id: 1 })
+			.where('id = :id', { id })
 			.execute();
 	}
 
 	async findByCategory(categoryId: number): Promise<SparePart[]> {
 		return this.sparePartRepository.find({ where: { category: { id: categoryId } } });
-	}
-
-	async findById(id: number) {
-		return this.sparePartRepository.findOne({ where: { id } });
 	}
 }
