@@ -9,5 +9,6 @@ import { CategoriesModule } from '../categories/categories.module';
 	imports: [TypeOrmModule.forFeature([SparePart]), CategoriesModule],
 	providers: [SparePartsService],
 	controllers: [SparePartsController],
+	exports: [SparePartsService],
 })
 export class SparePartsModule {}
