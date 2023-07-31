@@ -39,21 +39,21 @@ export class SparePartsService {
 		});
 	}
 
-	async decrementCount(id: number, subtraction: number) {
+	async decrementCount(id: number, value: number) {
 		const part = await this.findById(id);
 
 		return await this.sparePartRepository.save({
 			...part,
-			count: part.count - subtraction,
+			count: part.count - value,
 		});
 	}
 
-	async incrementCount(id: number, subtraction: number) {
+	async incrementCount(id: number, value: number) {
 		const part = await this.findById(id);
 
 		return await this.sparePartRepository.save({
 			...part,
-			count: part.count + subtraction,
+			count: part.count + value,
 		});
 	}
 
