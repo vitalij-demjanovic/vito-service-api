@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { SparePart } from '../../spare-parts/entities/spare-part.entity';
 
 @Entity()
@@ -14,6 +14,9 @@ export class Expense {
 
 	@Column()
 	quantityTaken: number;
+
+	@Column()
+	action: string;
 
 	@Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
 	totalPrice: number;

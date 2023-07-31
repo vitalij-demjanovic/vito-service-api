@@ -32,15 +32,28 @@ export class SparePartsService {
 	}
 
 	async findById(id: number) {
-		return this.sparePartRepository.findOne({ where: { id } });
+		return this.sparePartRepository.findOne({
+			where: {
+				id,
+			},
+		});
 	}
 
-	async updateCount(id: number, subtraction: number) {
+	async decrementCount(id: number, subtraction: number) {
 		const part = await this.findById(id);
 
 		return await this.sparePartRepository.save({
 			...part,
 			count: part.count - subtraction,
+		});
+	}
+
+	async incrementCount(id: number, subtraction: number) {
+		const part = await this.findById(id);
+
+		return await this.sparePartRepository.save({
+			...part,
+			count: part.count + subtraction,
 		});
 	}
 
@@ -54,7 +67,13 @@ export class SparePartsService {
 	}
 
 	async findByCategory(categoryId: number): Promise<SparePart[]> {
-		return this.sparePartRepository.find({ where: { category: { id: categoryId } } });
+		return this.sparePartRepository.find({
+			where: {
+				category: {
+					id: categoryId,
+				},
+			},
+		});
 	}
 
 	async getExpensesPart(id: number) {

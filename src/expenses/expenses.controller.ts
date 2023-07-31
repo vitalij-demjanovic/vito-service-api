@@ -5,8 +5,13 @@ import { ExpensesService } from './expenses.service';
 @Controller('expenses')
 export class ExpensesController {
 	constructor(private expanseService: ExpensesService) {}
-	@Post('create')
+	@Post('withdrawal')
+	async createWithdrawal(@Body() dto: CreateExpenseDto) {
+		return this.expanseService.createExpenseWithdrawal(dto);
+	}
+
+	@Post('income')
 	async createExpense(@Body() dto: CreateExpenseDto) {
-		return this.expanseService.createExpense(dto);
+		return this.expanseService.createExpenseIncome(dto);
 	}
 }

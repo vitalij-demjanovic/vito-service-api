@@ -4,7 +4,7 @@ import { Expense } from './entities/expense.entity';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { SparePartsService } from '../spare-parts/spare-parts.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LARGE_AMOUNT_ERROR } from './exoenses.constans';
+import { INCOME, LARGE_AMOUNT_ERROR, WITHDRAWAL } from './exoenses.constans';
 
 @Injectable()
 export class ExpensesService {
@@ -14,7 +14,7 @@ export class ExpensesService {
 		private sparePartService: SparePartsService,
 	) {}
 
-	async createExpense(dto: CreateExpenseDto) {
+	async createExpenseWithdrawal(dto: CreateExpenseDto) {
 		const part = await this.sparePartService.findById(dto.partId);
 		if (part.count >= dto.quantityTaken) {
 			await this.expensesRepository.save({
@@ -23,10 +23,26 @@ export class ExpensesService {
 				quantityTaken: dto.quantityTaken,
 				totalPrice: part.price * dto.quantityTaken,
 				part,
+				action: WITHDRAWAL,
 			});
-			return await this.sparePartService.updateCount(dto.partId, dto.quantityTaken);
+			return await this.sparePartService.decrementCount(dto.partId, dto.quantityTaken);
 		} else {
 			throw new BadRequestException(LARGE_AMOUNT_ERROR);
 		}
+	}
+
+	async createExpenseIncome(dto: CreateExpenseDto) {
+		const part = await this.sparePartService.findById(dto.partId);
+
+		await this.expensesRepository.save({
+			partName: part.name,
+			date: new Date(),
+			quantityTaken: dto.quantityTaken,
+			totalPrice: part.price * dto.quantityTaken,
+			part,
+			action: INCOME,
+		});
+
+		return await this.sparePartService.incrementCount(dto.partId, dto.quantityTaken);
 	}
 }
