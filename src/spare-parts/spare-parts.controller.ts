@@ -21,4 +21,14 @@ export class SparePartsController {
 	async findByCategory(@Param('categoryId') categoryId: number): Promise<SparePart[]> {
 		return this.sparePartsService.findByCategory(categoryId);
 	}
+
+	@Get('part/:partId')
+	async findById(@Param('partId') partId: number) {
+		return this.sparePartsService.findById(partId);
+	}
+
+	@Get('expenses/:id')
+	async findExpensesPart(@Param('id') partId: number) {
+		return this.sparePartsService.getExpensesPart(partId);
+	}
 }

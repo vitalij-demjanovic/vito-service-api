@@ -31,16 +31,59 @@ export class SparePartsService {
 		});
 	}
 
+	async findById(id: number) {
+		return this.sparePartRepository.findOne({
+			where: {
+				id,
+			},
+		});
+	}
+
+	async decrementCount(id: number, subtraction: number) {
+		const part = await this.findById(id);
+
+		return await this.sparePartRepository.save({
+			...part,
+			count: part.count - subtraction,
+		});
+	}
+
+	async incrementCount(id: number, subtraction: number) {
+		const part = await this.findById(id);
+
+		return await this.sparePartRepository.save({
+			...part,
+			count: part.count + subtraction,
+		});
+	}
+
 	async updatePart(id: number, dto: UpdateSparePartDto) {
 		return await this.sparePartRepository
 			.createQueryBuilder()
 			.update(SparePart)
 			.set(dto)
-			.where('id = :id', { id: 1 })
+			.where('id = :id', { id })
 			.execute();
 	}
 
 	async findByCategory(categoryId: number): Promise<SparePart[]> {
-		return this.sparePartRepository.find({ where: { category: { id: categoryId } } });
+		return this.sparePartRepository.find({
+			where: {
+				category: {
+					id: categoryId,
+				},
+			},
+		});
+	}
+
+	async getExpensesPart(id: number) {
+		return this.sparePartRepository.findOne({
+			where: {
+				id,
+			},
+			relations: {
+				expenses: true,
+			},
+		});
 	}
 }
